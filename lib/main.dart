@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 // direct-download form of the same file (extracted the file ID from
 // the share link you gave me).
 const String kResumeUrl =
-    'https://www.dropbox.com/scl/fi/ik00bjyssjutfcmqmjc5r/SuprithResume1.pdf?rlkey=to43vybgjf7cld6swgvifkp02&st=oj9wtf9t&dl=0';
+    'https://drive.google.com/uc?export=download&id=1Eo9ATXCIplEKtT5ZxgUkt34hqZoIudF7';
 
 // Your Formspree endpoint.
 const String kFormspreeUrl = 'https://formspree.io/f/xwleeply';
@@ -389,6 +389,8 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                     'REST API'
                   ],
                   isDark: isDark,
+                  repoUrl: 'https://github.com/SuprithS25/mapex',
+                  onOpenRepo: _launchUrl,
                 ),
 
                 const SizedBox(height: 20),
@@ -413,6 +415,39 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                     'Dart'
                   ],
                   isDark: isDark,
+                  repoUrl: 'https://github.com/SuprithS25/MAD',
+                  onOpenRepo: _launchUrl,
+                ),
+
+                const SizedBox(height: 20),
+
+                // Project 3: Attendance Leave Manager
+                AnimatedProjectCard(
+                  title: 'Attendance Leave Manager',
+                  subtitle:
+                      'Full-Stack HR Attendance & Leave Management System (Epic Minds)',
+                  overview:
+                      'Built an HRMS web app for clock-in/out tracking, leave requests, and admin approvals, with a documented REST API and MySQL schema.',
+                  contributions: [
+                    'Designed a component-driven React + TypeScript frontend with dedicated modules for attendance, leave, auth, and admin dashboards.',
+                    'Defined a full REST API surface (auth, attendance, leave, users) with structured error codes and documented request/response contracts.',
+                    'Modeled a relational MySQL schema covering users, roles, attendance, leave requests, and sessions, with an ER diagram for reference.',
+                    'Built an in-app interactive API testing interface for exercising every endpoint during development.',
+                  ],
+                  challenges:
+                      'Structured the API layer so the mock localStorage-backed implementation could later be swapped for real HTTP calls to a MySQL backend with minimal frontend changes.',
+                  tags: const [
+                    'React',
+                    'TypeScript',
+                    'Vite',
+                    'Tailwind CSS',
+                    'MySQL',
+                    'REST API'
+                  ],
+                  isDark: isDark,
+                  repoUrl:
+                      'https://github.com/SuprithS25/Attendance-Leave-Manager',
+                  onOpenRepo: _launchUrl,
                 ),
 
                 const SizedBox(height: 80),
@@ -675,6 +710,10 @@ class AnimatedProjectCard extends StatefulWidget {
   final String challenges;
   final List<String> tags;
   final bool isDark;
+  // URL to open when the card is clicked/tapped (e.g. the GitHub repo).
+  final String? repoUrl;
+  // Called with repoUrl when the card is tapped, if repoUrl is set.
+  final ValueChanged<String>? onOpenRepo;
 
   const AnimatedProjectCard({
     super.key,
@@ -685,6 +724,8 @@ class AnimatedProjectCard extends StatefulWidget {
     required this.challenges,
     required this.tags,
     required this.isDark,
+    this.repoUrl,
+    this.onOpenRepo,
   });
 
   @override
@@ -697,86 +738,107 @@ class _AnimatedProjectCardState extends State<AnimatedProjectCard> {
   @override
   Widget build(BuildContext context) {
     final subtleColor = widget.isDark ? Colors.white60 : Colors.black54;
+    final isClickable = widget.repoUrl != null && widget.onOpenRepo != null;
+
     return MouseRegion(
+      cursor:
+          isClickable ? SystemMouseCursors.click : SystemMouseCursors.basic,
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        transform: Matrix4.translationValues(0, _isHovered ? -4 : 0, 0),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: widget.isDark ? const Color(0xFF111111) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: _isHovered
-                ? (widget.isDark ? Colors.white54 : Colors.black)
-                : (widget.isDark
-                    ? const Color(0xFF222222)
-                    : const Color(0xFFEEEEEE)),
+      child: GestureDetector(
+        onTap: isClickable
+            ? () => widget.onOpenRepo!(widget.repoUrl!)
+            : null,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          transform: Matrix4.translationValues(0, _isHovered ? -4 : 0, 0),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: widget.isDark ? const Color(0xFF111111) : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: _isHovered
+                  ? (widget.isDark ? Colors.white54 : Colors.black)
+                  : (widget.isDark
+                      ? const Color(0xFF222222)
+                      : const Color(0xFFEEEEEE)),
+            ),
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.title,
-              style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -0.3),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              widget.subtitle,
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                  color: subtleColor),
-            ),
-            const SizedBox(height: 12),
-            Text(widget.overview,
-                style: const TextStyle(fontSize: 14, height: 1.4)),
-            const SizedBox(height: 12),
-            ...widget.contributions.map((c) => Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('• '),
-                      Expanded(
-                          child: Text(c,
-                              style:
-                                  TextStyle(fontSize: 13, color: subtleColor))),
-                    ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.title,
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -0.3),
+                    ),
                   ),
-                )),
-            const SizedBox(height: 8),
-            Text(
-              '⚡ Challenge: ${widget.challenges}',
-              style: TextStyle(
-                  fontSize: 12,
-                  fontStyle: FontStyle.italic,
-                  color: subtleColor),
-            ),
-            const SizedBox(height: 16),
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: widget.tags
-                  .map((t) => Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: widget.isDark
-                              ? const Color(0xFF222222)
-                              : const Color(0xFFF0F0F0),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(t, style: const TextStyle(fontSize: 11)),
-                      ))
-                  .toList(),
-            ),
-          ],
+                  if (isClickable) ...[
+                    const SizedBox(width: 8),
+                    Icon(Icons.arrow_outward, size: 18, color: subtleColor),
+                  ],
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                widget.subtitle,
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                    color: subtleColor),
+              ),
+              const SizedBox(height: 12),
+              Text(widget.overview,
+                  style: const TextStyle(fontSize: 14, height: 1.4)),
+              const SizedBox(height: 12),
+              ...widget.contributions.map((c) => Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('• '),
+                        Expanded(
+                            child: Text(c,
+                                style: TextStyle(
+                                    fontSize: 13, color: subtleColor))),
+                      ],
+                    ),
+                  )),
+              const SizedBox(height: 8),
+              Text(
+                '⚡ Challenge: ${widget.challenges}',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontStyle: FontStyle.italic,
+                    color: subtleColor),
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: widget.tags
+                    .map((t) => Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: widget.isDark
+                                ? const Color(0xFF222222)
+                                : const Color(0xFFF0F0F0),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child:
+                              Text(t, style: const TextStyle(fontSize: 11)),
+                        ))
+                    .toList(),
+              ),
+            ],
+          ),
         ),
       ),
     );
