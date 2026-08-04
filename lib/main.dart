@@ -363,7 +363,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 // 2. FEATURED PROJECTS SECTION
                 Container(key: _projectsKey),
                 const SectionTitle(
-                    title: 'Projects', subtitle: 'Crafted with precision.'),
+                    title: 'Projects', subtitle: 'Here are some of my major projects.'),
                 const SizedBox(height: 24),
 
                 // Project 1: ApexPe (Velorantra Collaboration)
