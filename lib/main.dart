@@ -7,7 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 // direct-download form of the same file (extracted the file ID from
 // the share link you gave me).
 const String kResumeUrl =
-    'https://drive.google.com/uc?export=download&id=1Eo9ATXCIplEKtT5ZxgUkt34hqZoIudF7';
+    'https://www.dropbox.com/scl/fi/ik00bjyssjutfcmqmjc5r/SuprithResume1.pdf?rlkey=to43vybgjf7cld6swgvifkp02&st=9zuj37vf&e=1&dl=0';
 
 // Your Formspree endpoint.
 const String kFormspreeUrl = 'https://formspree.io/f/xwleeply';
