@@ -395,7 +395,33 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
                 const SizedBox(height: 20),
 
-                // Project 2: Malicious App Detector
+                //Project 2-Ai job search agent
+                  AnimatedProjectCard(
+                    title: 'AI Job Search Agent',
+                    subtitle: 'Intelligent Job Search & Application Assistant',
+                    overview:
+                      'AI-powered job search agent that discovers relevant job opportunities, analyzes job descriptions, matches them with candidate profiles, and assists with personalized applications.',
+                    contributions: [
+                      'Built an automated job discovery and filtering workflow to identify relevant opportunities based on candidate preferences.',
+                      'Integrated AI-powered analysis to evaluate job descriptions and generate personalized application content.',
+                      ],
+                    challenges:
+                      'Handled inconsistent job listing data and automated the end-to-end search and analysis workflow while keeping the application process reliable.',
+                      tags: const [
+                        'Python',
+                        'AI',
+                        'Automation',
+                        'Web Scraping',
+                        'Job Search',
+                      ],
+                      isDark: isDark,
+                      repoUrl: 'https://github.com/SuprithS25/Ai-job-search-agent',
+                      onOpenRepo: _launchUrl,
+                    ),
+
+                    const SizedBox(height: 20),
+
+                // Project 3: Malicious App Detector
                 AnimatedProjectCard(
                   title: 'Malicious Mobile Application Detector',
                   subtitle: 'Security Scanner & AI Assistant',
@@ -421,7 +447,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
                 const SizedBox(height: 20),
 
-                // Project 3: Attendance Leave Manager
+                // Project 4: Attendance Leave Manager
                 AnimatedProjectCard(
                   title: 'Attendance Leave Manager',
                   subtitle:
@@ -508,6 +534,10 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
                 SkillProgressBar(
                     skill: 'Git, C#, & Figma UI Design',
                     percentage: 0.75,
+                    isDark: isDark),
+                SkillProgressBar(
+                    skill: 'Docker & Containerization',
+                    percentage: 0.68,
                     isDark: isDark),
 
                 const SizedBox(height: 80),
